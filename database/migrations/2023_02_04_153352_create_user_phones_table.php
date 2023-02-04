@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use \App\Models\User;
 
 return new class extends Migration
 {
@@ -13,10 +14,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('password_resets', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
+        Schema::create('user_phones', function (Blueprint $table) {
+            $table->id();
+            $table->string('phone_number', 20);
+            $table->string('phone_type', 100);
+            $table->foreignIdFor(User::class)->nullable()->default(null);
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('password_resets');
+        Schema::dropIfExists('user_phones');
     }
 };

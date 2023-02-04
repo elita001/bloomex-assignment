@@ -34,4 +34,4 @@ Great to haves:
 - Dockerfile to fully provision and setup the app for use 
 - Docker compose file to have separate container for database (MySQL)
 
-## Installation 
+## Installation  

@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +14,4 @@ use App\Models\User;
 |
 */
 
-Route::get('/users', function() {
-    return UserResource::collection(User::with('userAddress')->with('userPhones')->get());
-});
+Route::get('/users', [UserController::class, 'index']);

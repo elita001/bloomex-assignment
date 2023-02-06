@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'userAddress' => UserAddressResource::make($this->userAddress),
             'userPhones' => UserPhoneResource::collection($this->userPhones),
+            'created_at' => $this->created_at,
         ];
     }
 }

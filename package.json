@@ -17,6 +17,8 @@
         "vue": "^3.2.36"
     },
     "dependencies": {
+        "datatables.net-dt": "^1.13.2",
+        "datatables.net-vue3": "^2.0.0",
         "vue-loader": "^17.0.1"
     }
 }

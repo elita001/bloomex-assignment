@@ -35,3 +35,45 @@ Great to haves:
 - Docker compose file to have separate container for database (MySQL)
 
 ## Installation  
+Access to an Ubuntu 22.04 (Can be installed on WSL2 on Windows as well - [instruction](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-11-with-gui-support#1-overview)) local machine as a non-root user with sudo privileges.
+
+Install Docker on your server following Steps 1 and 2 of [How To Install and Use Docker on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04).
+
+Clone the project: 
+```
+git clone git@github.com:elita001/bloomex-assignment.git
+```
+
+Navigate to the project directory:
+```
+cd bloomex-assignment
+```
+
+Build and run docker containers
+```
+docker-compose build app
+docker-compose up -d
+```
+
+Install composer dependencies:
+```
+docker-compose exec app rm -rf vendor composer.lock
+docker-compose exec app composer install
+```
+
+Generate key, run migration and seeders:
+```
+docker-compose exec app php artisan key:generate
+docker-compose exec app php artisan migrate
+docker-compose exec app php artisan db:seed
+```
+
+Install npm dependencies and build the project:
+```
+docker-compose exec app npm install
+docker-compose exec app npm install vue@next vue-loader@next
+docker-compose exec app npm i @vitejs/plugin-vue
+docker-compose exec app npm run build
+```
+
+The project is available now, visit [http://localhost:8000/] (http://localhost:8000/)

@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\Repositories\UserRepository;
+use App\Structure\OrderByItem;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -14,16 +15,38 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        return UserResource
-            ::collection(
-                User::with('userAddress')
-                    ->with('userPhones')
-                    ->get()
+        $draw = $request->get('draw');
+        $columns = $request->get('columns');
+        $offset = $request->get('start');
+        $limit = $request->get('length');
+        $search = $request->get('search');
+        $searchString = $search['value'] ?? '';
+        $order = $request->get('order', []);
+        /**
+         * @var OrderByItem[]
+         */
+        $sort = [];
+        foreach ($order as $orderItem) {
+            if (
+                !isset($orderItem['column'])
+                || !isset($columns[$orderItem['column']])
+                || !isset($columns[$orderItem['column']]['name'])
             )
-            ->response()
-            ->header('Content-Type', 'application/json');
+                continue;
+            $dir = $orderItem['dir'] ?? 'asc';
+            $sort[] = new OrderByItem($columns[$orderItem['column']]['name'], $dir);
+        }
+        $userRepository = new UserRepository();
+        $data = UserResource::collection($userRepository->getAll($offset, $limit, $searchString, $sort));
+        $total = $userRepository->count($searchString);
+        return response()->json([
+            'draw' => $draw,
+            'recordsTotal' => $total,
+            'recordsFiltered' => $total,
+            'data' => $data,
+        ])->header('Content-Type', 'application/json');
     }
 
     /**

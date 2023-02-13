@@ -5,11 +5,21 @@
     DataTable.use(DataTablesLib);
 
     const columns = [
-        { data: 'firstname' },
-        { data: 'lastname' },
-        { data: 'email' },
+        {
+            data: 'firstname',
+            name: 'users.firstname'
+        },
+        {
+            data: 'lastname',
+            name: 'users.lastname'
+        },
+        {
+            data: 'email',
+            name: 'users.email'
+        },
         {
             data: 'userPhones',
+            name: 'userPhones',
             orderable: false,
             render: function(data) {
                 // TODO use Vue component
@@ -25,6 +35,7 @@
         {
             // TODO use Vue component
             data: 'userAddress',
+            name: 'userAddress',
             orderable: false,
             render: function(data) {
                 if (!data)
@@ -33,7 +44,9 @@
             }
         },
         {
-            data: 'created_at'
+            data: 'created_at',
+            name: 'users.created_at',
+            type: 'datetime'
         }
     ];
 </script>
@@ -43,6 +56,7 @@
     <h1>Bloomex Users</h1>
     <DataTable
             :columns="columns"
+            :options="{serverSide: true}"
             ajax="/api/users"
             class="display"
             width="100%"

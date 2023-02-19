@@ -4,7 +4,9 @@ namespace App\Repositories;
 
 
 use App\Models\User;
-use App\Structure\OrderByItem;
+use App\Models\UserAddress;
+use App\Structure\Db\OrderByItem;
+use App\Structure\Db\FilterItem;
 use Illuminate\Database\Eloquent\Builder;
 
 class UserRepository implements RepositoryInterface
@@ -34,8 +36,11 @@ class UserRepository implements RepositoryInterface
     }
 
 
-    public function getAll($offset = 0, $limit = self::LIMIT, $search = '', $sort = [])
+    public function getAll($offset = 0, $limit = self::LIMIT, $search = '', $sort = [], $filter = [])
     {
+        if (!$limit) {
+            $limit = self::LIMIT;
+        }
         $query = User::with('userAddress')
             ->with('userPhones');
         if ($search) {
@@ -58,6 +63,20 @@ class UserRepository implements RepositoryInterface
         /** @var OrderByItem $sortItem */
         foreach ($sort as $sortItem) {
             $query->orderBy($sortItem->getColumn(), $sortItem->getDirection());
+        }
+        /** @var FilterItem $filterItem */
+        foreach ($filter as $filterItem) {
+            $relation = $filterItem->getRelation();
+            if ($relation) {
+                $query->whereHas(
+                    $filterItem->getRelation(),
+                    function (Builder $query) use ($filterItem) {
+                        $query->where($filterItem->getColumn(), $filterItem->getOperator(), $filterItem->getValue());
+                    }
+                );
+                continue;
+            }
+            $query->where($filterItem->getColumn(), $filterItem->getOperator(), $filterItem->getValue());
         }
         return $query->offset($offset)->limit($limit)->get();
     }
@@ -99,4 +118,7 @@ class UserRepository implements RepositoryInterface
         // TODO: Implement update() method.
     }
 
+    public function getCountries() {
+        return UserAddress::select('country')->orderBy('country')->distinct(true)->pluck('country');
+    }
 }

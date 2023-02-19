@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository;
-use App\Structure\OrderByItem;
+use App\Structure\Db\FilterItem;
+use App\Structure\Db\OrderByItem;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -18,28 +19,47 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $draw = $request->get('draw');
-        $columns = $request->get('columns');
+        $columnsParam = $request->get('columns');
         $offset = $request->get('start');
         $limit = $request->get('length');
-        $search = $request->get('search');
-        $searchString = $search['value'] ?? '';
-        $order = $request->get('order', []);
+        $searchParam = $request->get('search');
+        $searchString = $searchParam['value'] ?? '';
+        $sortParams = $request->get('order', []);
+        $filterParams = $request->get('filter', []);
         /**
          * @var OrderByItem[]
          */
         $sort = [];
-        foreach ($order as $orderItem) {
+        foreach ($sortParams as $sortParam) {
             if (
-                !isset($orderItem['column'])
-                || !isset($columns[$orderItem['column']])
-                || !isset($columns[$orderItem['column']]['name'])
+                !isset($sortParam['column'])
+                || !isset($columnsParam[$sortParam['column']])
+                || !isset($columnsParam[$sortParam['column']]['name'])
             )
                 continue;
-            $dir = $orderItem['dir'] ?? 'asc';
-            $sort[] = new OrderByItem($columns[$orderItem['column']]['name'], $dir);
+            $dir = $sortParam['dir'] ?? 'asc';
+            $sort[] = new OrderByItem($columnsParam[$sortParam['column']]['name'], $dir);
+        }
+        /**
+         * @var FilterItem[]
+         */``
+        $filter = [];
+        foreach ($filterParams as $filterParam) {
+            if (!isset($filterParam['column'])
+                || !isset($filterParam['operator'])
+                || !isset($filterParam['value'])
+            )
+                continue;
+            $relation = $filterParam['relation'] ?? null;
+            $filter[] = new FilterItem(
+                $filterParam['column'],
+                $filterParam['operator'],
+                $filterParam['value'],
+                $relation
+            );
         }
         $userRepository = new UserRepository();
-        $data = UserResource::collection($userRepository->getAll($offset, $limit, $searchString, $sort));
+        $data = UserResource::collection($userRepository->getAll($offset, $limit, $searchString, $sort, $filter));
         $total = $userRepository->count($searchString);
         return response()->json([
             'draw' => $draw,

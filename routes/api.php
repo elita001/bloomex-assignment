@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\UserAddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,3 +16,4 @@ use App\Http\Controllers\Api\UserController;
 */
 
 Route::get('/users', [UserController::class, 'index']);
+Route::get('/userAddresses/countries', [UserAddressController::class, 'countries']);

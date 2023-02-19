@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Structure;
+namespace App\Structure\Db;
 
 /**
  * Class containing params for Eloquent orderBy method.
  *
  * Class OrderByItem
- * @package App\Structure
+ * @package App\Structure\Db
  */
 class OrderByItem
 {

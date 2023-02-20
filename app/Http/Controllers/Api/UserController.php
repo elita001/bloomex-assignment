@@ -42,7 +42,7 @@ class UserController extends Controller
         }
         /**
          * @var FilterItem[]
-         */``
+         */
         $filter = [];
         foreach ($filterParams as $filterParam) {
             if (!isset($filterParam['column'])

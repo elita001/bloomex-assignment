@@ -26,8 +26,8 @@
     }
 </script>
 <template>
-    <label>Filter by Country:</label>
-    <select name="country_filter" class="users-datatable-filter-country" @change="countrySelected">
+    <label for="users-datatable-filter-country" class="form-label">Filter by Country:</label>
+    <select id="users-datatable-filter-country" name="country_filter" class="form-select" @change="countrySelected">
         <option value="">-Select Country-</option>
         <option v-for="country in countries" :key="country" :value="country">{{ country }}</option>
     </select>

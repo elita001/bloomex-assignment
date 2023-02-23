@@ -1,13 +1,19 @@
 <script>
     import DataTable from 'datatables.net-vue3';
-    import DataTablesLib from 'datatables.net';
+    import DataTablesLib from 'datatables.net-bs5';
+    import 'datatables.net-datetime';
+    import 'datatables.net-responsive-bs5';
+    import 'datatables.net-searchpanes-bs5';
+//    import 'datatables.net-bs5';
     import CountryFilter from './CountryFilter.vue';
+    import Navbar from './Navbar.vue';
     DataTable.use(DataTablesLib);
 
     export default {
         components: {
             DataTable,
-            CountryFilter
+            CountryFilter,
+            Navbar
         },
         data() {
             return {
@@ -51,7 +57,10 @@
                     {
                         data: 'created_at',
                         name: 'users.created_at',
-                        type: 'datetime'
+                        type: 'datetime',
+                        render: function(data) {
+                            return new Date(data).toLocaleDateString();
+                        }
                     }
                 ],
                 options: {
@@ -61,7 +70,7 @@
                     url: "/api/users",
                     data: function(d) {
                         let filters = [];
-                        let countrySelect = document.querySelector('.users-datatable-filter-country');
+                        let countrySelect = document.getElementById('users-datatable-filter-country');
                         if (countrySelect && countrySelect.value) {
                             filters.push({
                                 relation: "userAddress",
@@ -90,12 +99,17 @@
 </script>
 
 <template>
+    <Navbar />
     <div class="container">
-        <h1>Bloomex Users</h1>
-        <CountryFilter @response="(country) => countrySelected(country)" />
+        <h1 class="text-center  mt-4 mb-3">Bloomex Users</h1>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 mb-2">
+                <CountryFilter @response="(country) => countrySelected(country)" />
+            </div>
+        </div>
         <DataTable
                 ref="table"
-                class="display"
+                class="display table table-striped table-bordered dt-responsive nowrap"
                 width="100%"
                 :columns="columns"
                 :options="options"
@@ -126,5 +140,9 @@
 </template>
 
 <style>
-@import 'datatables.net-dt';
+@import 'bootstrap';
+@import 'datatables.net-bs5';
+@import 'datatables.net-datetime';
+@import 'datatables.net-responsive-bs5';
+@import 'datatables.net-searchpanes-bs5';
 </style>

@@ -19,10 +19,20 @@
                 font-family: 'Nunito', sans-serif;
             }
         </style>
+        @section('style')
         @vite('resources/sass/app.scss')
+        @show
     </head>
-    <body class="antialiased">
-        <div id="app"></div>
+    <body class="antialiased @yield('bodyClass')">
+    @section('nav')
+        @include('layouts.nav')
+    @show
+
+    @section('content')
+    @show
+
+    @section('footer-scripts')
         @vite('resources/js/app.js')
+    @show
     </body>
 </html>

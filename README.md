@@ -77,3 +77,7 @@ docker-compose exec app npm run build
 ```
 
 The project is available now, visit http://localhost:8000/
+
+
+# Sass
+npm install -D sass-loader sass

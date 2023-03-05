@@ -4,5 +4,233 @@
 // Variables
 @import 'variables';
 
-// Styles
+// Animations
+@import 'animations';
 
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+// Styles
+.about-page {
+  background-color: #eee;
+}
+.about-sub-heading {
+  margin-top: 1rem;
+}
+.progress-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+.progress-item {
+  width: $progress-item-size;
+  height: $progress-item-size;
+  font-size: 0.85rem;
+  margin: calc($progress-item-size / 2);
+  position: relative;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  border: 1px solid #E0DFE7;
+  color: #BDBCC2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+.progress-item::after {
+  position: absolute;
+  content: '';
+  border-right: 1px solid #E0DFE7;
+  width: 0;
+  height: $progress-item-size;
+  bottom: -$progress-item-size;
+}
+.progress-item:last-child::after {
+  display: none;
+}
+.progress-item.done {
+  background-color: $color-pink;
+  border: 1px solid $color-pink;
+  color: #FFFFFF;
+}
+.progress-item.done::after {
+  border-color: $color-pink;
+}
+.progress-item.current {
+  font-size: 0;
+  border: 1px solid $color-pink;
+}
+.progress-item.current span::after,
+.progress-item.current span::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+.progress-item.current span::after {
+  border: calc($progress-item-size / 4) solid $color-pink;
+}
+.progress-item.current span::before {
+  left: calc($progress-item-size / -2);
+  opacity: 0.2;
+  transition-duration: .2s;
+  border: $progress-item-size solid $color-pink;
+  -webkit-animation: pulse-ring 1.2s ease-out infinite;
+  -o-animation: pulse-ring 1.2s ease-out infinite;
+  animation: pulse-ring 1.2s ease-out infinite;
+}
+.step {
+  background-color: #FFFFFF;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+  padding: 40px 25px;
+  margin: 40px 25px;
+  box-shadow: 1px 4px 5px 0 #d4d4d4;
+  border: 1px solid #d4d4d4;
+  text-align: center;
+}
+.btn-grow {
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+}
+.step-btn {
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  position: relative;
+  padding: 13px 25px;
+}
+.step-btn:hover {
+  background-color: #333333;
+}
+.step-heading {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+.step-choice {
+  margin-bottom: 20px;
+  border: 1px solid #DEE0E6;
+  color: #333;
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+.step-choice:hover,
+input[type=radio]:checked + .step-choice,
+input[type=checkbox]:checked + .step-choice {
+  color: #FFFFFF;
+  background-color: $color-pink;
+}
+.step-choice:last-child {
+  margin-bottom: 0;
+}
+.step select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.step input[type=text],
+.step input[type=number],
+.step input[type=email],
+.step input[type=tel],
+.step select {
+  border: 1px solid #Dee0e6;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  outline-color: $color-pink;
+  font-size: 18px;
+  padding: 15px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  width: 100%;
+}
+@include media-breakpoint-up(sm) {
+  .progress-items {
+    flex-direction: row;
+    margin-top: 2rem;
+  }
+  .progress-item {
+    margin: 0 calc($progress-item-size / 2);
+  }
+  .progress-item::after {
+    bottom: unset;
+    width: $progress-item-size;
+    height: 0;
+    right: -$progress-item-size;
+    border-right: none;
+    border-bottom: 1px solid #E0DFE7;
+  }
+}
+@include media-breakpoint-up(md) {
+  .btn-grow {
+    width: 95%;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+  }
+  .btn-grow:hover {
+    width: 100%;
+  }
+  .progress-item {
+    width: $progress-item-size-md;
+    height: $progress-item-size-md;
+    font-size: 1.15rem;
+    margin: 0 calc($progress-item-size-md / 2);
+  }
+  .progress-item.current span::after {
+    border: calc($progress-item-size-md / 4) solid $color-pink;
+  }
+  .progress-item.current span::before {
+    left: calc($progress-item-size-md / -2);
+    border: $progress-item-size-md solid $color-pink;
+  }
+  .progress-item::after {
+    width: $progress-item-size-md;
+    right: -$progress-item-size-md;
+  }
+  .step {
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+    padding: 100px;
+    margin: 50px 30px;
+  }
+  .step-btn {
+    font-size: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  .step-heading {
+    font-size: 28px;
+    margin-bottom: 70px;
+  }
+  .step input[type=text],
+  .step input[type=number],
+  .step input[type=email],
+  .step input[type=tel],
+  .step select {
+    padding: 15px 25px;
+    font-size: 20px;
+  }
+}

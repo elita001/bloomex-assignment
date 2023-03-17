@@ -36,27 +36,3 @@ RUN mkdir -p /home/$user/.composer && \
 WORKDIR /var/www
 
 USER $user
-
-#FROM node:19.6
-
-# Arguments defined in docker-compose.yml
-#ARG user
-
-
-## Set working directory
-#WORKDIR /var/www
-#
-## avoid million NPM install messages
-#ENV npm_config_loglevel warn
-## allow installing when the main user is root
-##ENV npm_config_unsafe_perm true
-#
-## Node libraries
-#RUN node -p process.versions
-#
-#COPY package*.json .
-#RUN npm install && npm audit fix
-#RUN npm install vue@next vue-loader@next
-#RUN npm i @vitejs/plugin-vue
-#COPY . .
-#RUN npm run build

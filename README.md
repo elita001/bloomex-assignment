@@ -78,6 +78,11 @@ docker-compose exec app npm run build
 
 The project is available now, visit http://localhost:8000/
 
-
 # Sass
 npm install -D sass-loader sass
+
+# Unit tests
+Run unit tests with the following command
+```
+docker-compose exec app php artisan test
+```
